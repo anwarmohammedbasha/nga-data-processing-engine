@@ -1,7 +1,3 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../')))
-
 import pandas as pd
 from sqlalchemy import create_engine, text
 from src.app.job.purchase.models.purchase import Purchase
@@ -42,7 +38,3 @@ def purchase_job(path):
             index = False
         )
         print('Data Loaded to DB')
-
-  
-if __name__ == '__main__':
-    purchase_job(path='E:/nga-data-processing-engine/data/purchase.csv')

@@ -1,7 +1,3 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../')))
-
 import pandas as pd
 from sqlalchemy import create_engine, text
 from src.app.job.products.models.products import Products
@@ -29,7 +25,6 @@ def product_job(path):
 
     products = pd.DataFrame(validated_date)
 
-    print(products.head())
 
 
     with engine.begin() as conn:
@@ -45,7 +40,3 @@ def product_job(path):
             index = False
         )
         print('Data Loaded to DB')
-
-  
-if __name__ == '__main__':
-    product_job(path='E:/nga-data-processing-engine/data/products.csv')
