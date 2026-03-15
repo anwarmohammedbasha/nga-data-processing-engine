@@ -46,4 +46,4 @@ def customer_job(path):
 
   
 if __name__ == '__main__':
-    customer_job(path='E:/New folder/nga-data-processing-engine/data/customers.csv')
+    customer_job(path='E:/nga-data-processing-engine/data/customers.csv')

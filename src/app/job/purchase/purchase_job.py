@@ -4,42 +4,39 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../.
 
 import pandas as pd
 from sqlalchemy import create_engine, text
-from src.app.job.products.models.products import Products
+from src.app.job.purchase.models.purchase import Purchase
 from src.app.interface.config import Postgres_DB_URI
 
 engine = create_engine(Postgres_DB_URI) 
 
 
-def product_job(path):
+def purchase_job(path):
     
     # Extract data from csv
-    raw = pd.read_csv(path)
+    raw = pd.read_csv(path, parse_dates=True)
 
 
     # Validation 
 
-    records = raw.to_dict(orient='records') # List of Dictonary
+    records = raw.to_dict(orient='records') 
 
 
 
     validated_date = []
-    for record in records:                          # for Each row
-        validated = Products(**record)             # Validate
+    for record in records:
+        validated = Purchase(**record)
         validated_date.append(validated.model_dump())
 
-    products = pd.DataFrame(validated_date)
-
-    print(products.head())
-
+    purchase = pd.DataFrame(validated_date)
 
     with engine.begin() as conn:
         # Delete records
-        conn.execute(text('TRUNCATE TABLE NGA_PRODUCTS_TBL'))
+        conn.execute(text('TRUNCATE TABLE NGA_PURCHASE_TBL'))
         print('Reocords Deleted')
         # Ingest records
-        products.to_sql(
+        purchase.to_sql(
             con=conn,
-            name='nga_products_tbl',
+            name='nga_purchase_tbl',
             schema='public',    
             if_exists = 'append',
             index = False
@@ -48,4 +45,4 @@ def product_job(path):
 
   
 if __name__ == '__main__':
-    product_job(path='E:/nga-data-processing-engine/data/products.csv')
+    purchase_job(path='E:/nga-data-processing-engine/data/purchase.csv')
